@@ -18,6 +18,10 @@ use tokio;
 
 pub struct ShardManagerContainer;
 
+impl TypeMapKey for ShardManagerContainer {
+    type Value = Arc<Mutex<ShardManager>>;
+}
+
 struct Handler;
 
 #[async_trait]
