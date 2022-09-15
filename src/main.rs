@@ -52,7 +52,7 @@ async fn main() {
 
             (owner, info.id);
         },
-        Err(why) => panic!("Could not access application info {:?}", why);
+        Err(why) => panic!("Could not access application info {:?}", why)
     };
 
     let framework = StandardFramework::new().configure(|c| c.owners(owners).prefix(">")).group(&GENERAL_GROUP);
