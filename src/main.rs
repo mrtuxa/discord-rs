@@ -14,6 +14,7 @@ use serenity::model::event::ResumedEvent;
 use serenity::model::gateway::Ready;
 use serenity::prelude::*;
 use tracing::{error, info};
+use tokio;
 
 pub struct ShardManagerContainer;
 
@@ -64,6 +65,10 @@ async fn main() {
     let shard_manager = client.shard_manager.clone();
 
     tokio::spawn(async move {
-        tokio::signal
+        tokio::signal::ctrl_c().await.expect("Could not register ctrl+c handler");
+        shard_manager.lock().await.shutdown_all().await;
     });
+    if let Err(why) = client.start().await {
+        error!("Client error: {:?}", why);
+    }
 }
